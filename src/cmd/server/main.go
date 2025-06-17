@@ -1,19 +1,21 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/lostish/woka-server/src/internal/config"
+	"github.com/lostish/woka-server/src/internal/db"
+	"github.com/lostish/woka-server/src/internal/domain"
 )
+
+func init() {
+	config.LoadEnv()
+	db.InitClient()
+}
 
 func main() {
 	router := gin.Default()
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	domain.InitRouting(router)
 
 	router.Run() // listen and serve on 0.0.0.0:8080
 }
