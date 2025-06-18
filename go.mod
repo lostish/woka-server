@@ -4,7 +4,12 @@ go 1.24.3
 
 require github.com/gin-gonic/gin v1.10.1
 
-require github.com/mitchellh/go-homedir v1.1.0 // indirect
+require (
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/phpdave11/gofpdi v1.0.15 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/signintech/gopdf v0.32.0 // indirect
+)
 
 require (
 	github.com/bytedance/sonic v1.13.3 // indirect

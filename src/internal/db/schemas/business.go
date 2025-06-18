@@ -25,6 +25,7 @@ type Business struct {
 	ID          *models.RecordID                      `json:"id,omitempty"`
 	UserId      *models.RecordID                      `json:"user_id"`
 	Name        string                                `json:"name"`
+	NameId      string                                `json:"name_id"`
 	Description string                                `json:"description"`
 	Locals      map[_BusinessAddress]_BusinessAddress `json:"address"`
 	CreatedAt   time.Time                             `json:"created_at"`
@@ -61,6 +62,7 @@ type Product struct {
 	BusinessId      *models.RecordID                      `json:"business_id"`
 	CategoryId      *models.RecordID                      `json:"category_id"`
 	Name            string                                `json:"name"`
+	NameId          string                                `json:"name_id"`
 	Description     string                                `json:"description"`
 	Tags            string                                `json:"tags"`
 	ShortThumbnail  url.URL                               `json:"short_thumbnail"`
