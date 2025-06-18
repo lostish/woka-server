@@ -1,4 +1,4 @@
-package stores
+package business
 
 import "github.com/gin-gonic/gin"
 
