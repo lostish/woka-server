@@ -13,7 +13,6 @@ main
 
 go.work
 go.work.sum
-go.sum
 
 .env
 .env.*

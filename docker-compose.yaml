@@ -7,37 +7,45 @@ services:
       SURREAL_URL: ${SURREAL_URL}
       SURREAL_USER: ${SURREAL_USER}
       SURREAL_PASSWORD: ${SURREAL_PASSWORD}
-      SURREAl_NAMESPACE: ${SURREAl_NAMESPACE}
+      SURREAL_NAMESPACE: ${SURREAL_NAMESPACE}
       SURREAL_DB: ${SURREAL_DB}
+    ports:
+      - 8000:8000
     volumes:
       - surrealdb_data:/db
+    networks:
+      - woka-net
   minio:
     image: minio/minio:latest
     container_name: minio
-    command: server /data
+    command: server /data --console-address ":9001"
     environment:
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_USE_SSL: ${MINIO_USE_SSL}
     volumes:
       - minio_data:/data
+    networks:
+      - woka-net
   woka-server:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: woka-server
     depends_on:
-      - surrealdb
-      - minio
+      surrealdb:
+        condition: service_started
+      minio:
+        condition: service_started
     environment:
       SURREAL_URL: ${SURREAL_URL}
       SURREAL_USER: ${SURREAL_USER}
       SURREAL_PASSWORD: ${SURREAL_PASSWORD}
-      SURREAl_NAMESPACE: ${SURREAl_NAMESPACE}
+      SURREAL_NAMESPACE: ${SURREAL_NAMESPACE}
       SURREAL_DB: ${SURREAL_DB}
       MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_USE_SSL: ${MINIO_USE_SSL}
       ENV: ${ENV}
     ports:

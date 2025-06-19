@@ -22,7 +22,7 @@ RUN apk add --no-cache ca-certificates && update-ca-certificates
 
 # Copy binary
 COPY --from=builder /app/woka-server .
-
+COPY wait-for-services.sh .
+RUN chmod +x wait-for-services.sh
 # Expose application port
-EXPOSE 8080
-CMD ["./woka-server"]
+ENTRYPOINT ["./wait-for-services.sh", "./woka-server"]

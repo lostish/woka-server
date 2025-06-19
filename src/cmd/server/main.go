@@ -5,11 +5,13 @@ import (
 	"github.com/lostish/woka-server/src/internal/config"
 	"github.com/lostish/woka-server/src/internal/db"
 	"github.com/lostish/woka-server/src/internal/domain"
+	"github.com/lostish/woka-server/src/internal/storage"
 )
 
 func init() {
 	config.LoadEnv()
 	db.InitClient()
+	storage.InitStorageClient()
 }
 
 func main() {
