@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
@@ -18,16 +19,18 @@ type ConfEnv struct {
 	MINIO_ACCESS_KEY  string `env:"MINIO_ACCESS_KEY,required"`
 	MINIO_SECRET_KEY  string `env:"MINIO_SECRET_KEY,required"`
 	MINIO_USE_SSL     bool   `env:"MINIO_USE_SSL,required"`
-	GIN_MODE          string `env:"GIN_MODE,required"`
+	ENV               string `env:"ENV"`
 }
 
 // var cfg ConfEnv
 
 func LoadEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-		log.Fatal(err)
+	// Solo cargar .env si NO estamos en producción (fuera de contenedor)
+	if os.Getenv("ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("Advertencia: No se pudo cargar .env localmente, pero no es crítico.")
+		}
 	}
 }
 

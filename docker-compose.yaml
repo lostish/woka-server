@@ -1,0 +1,56 @@
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    command: start --log debug --user ${SURREAL_USER} --pass ${SURREAL_PASSWORD}
+    environment:
+      SURREAL_URL: ${SURREAL_URL}
+      SURREAL_USER: ${SURREAL_USER}
+      SURREAL_PASSWORD: ${SURREAL_PASSWORD}
+      SURREAl_NAMESPACE: ${SURREAl_NAMESPACE}
+      SURREAL_DB: ${SURREAL_DB}
+    volumes:
+      - surrealdb_data:/db
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_USE_SSL: ${MINIO_USE_SSL}
+    volumes:
+      - minio_data:/data
+  woka-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: woka-server
+    depends_on:
+      - surrealdb
+      - minio
+    environment:
+      SURREAL_URL: ${SURREAL_URL}
+      SURREAL_USER: ${SURREAL_USER}
+      SURREAL_PASSWORD: ${SURREAL_PASSWORD}
+      SURREAl_NAMESPACE: ${SURREAl_NAMESPACE}
+      SURREAL_DB: ${SURREAL_DB}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_USE_SSL: ${MINIO_USE_SSL}
+      ENV: ${ENV}
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config:/app/config:ro
+    networks:
+      - woka-net
+
+volumes:
+  surrealdb_data:
+  minio_data:
+
+networks:
+  woka-net:
+    driver: bridge

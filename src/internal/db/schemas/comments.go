@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	CRT_URL   = "url"
-	CRT_IMAGE = "image"
+	CRT_URL               = "url"
+	CRT_IMAGE             = "image"
+	RESOURCE_TYPE_PRODUCT = "product"
+	RESOURCE_TYPE_TASK    = "task"
 )
 
 type _CommentResources struct {
